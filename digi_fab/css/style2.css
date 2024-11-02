@@ -32,17 +32,23 @@ html, body {
 h1{
     text-indent: 0em;
     background-color: #FFC778;
+    text-align: center;
 }
 h2{
     margin-left: 1em;
     margin-top: 1em;
+    text-align: center;
 }
 h3{
     margin-left: 2em;
+    border-bottom: solid 2px #FFA07A;
+    text-align: center;
 }
 div{
     margin-top: 1em;
     margin-left: 3em;
+    text-align: center;
+    font-weight: bold;
 }
 p{
     margin-left: 3em;
