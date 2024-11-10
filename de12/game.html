@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <title>pythonゲーム作成</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1>国名当てゲーム</h1><br>
+    <h2>~ルール説明~</h2><br>
+
+    <div>
+        各1回ずつ表示されるヒントを元に国を当てていくゲーム。<br>
+        問題数は全てで10問で、一カ国につき3回までヒントが出されるので3回目のヒントまでに国を導き出さなければならない。<br>
+        難易度設定もあり、1→簡単、2→普通、3→難しい　の3段階から選べるようになっている。3つのヒントの中から推測される国名を入力し、Enterを押すと正解か間違いかがわかる。<br>
+        間違えても特にペナルティーなどは無く、最後に総合得点が表示されるというシンプルなルール。<br>
+
+    <h2>~ソースコード~</h2><br>
+    <pre><code>
+        <code>
+            <ol style="list-style:decimal-leading-zero outside;in-left:0;padding-left:36px;margin:0;background-color:#EEF;color:#000;">
+            <li style="background-color:#EFF;">print("国当てゲームへようこそ。問題は10問です。ヒントは1つの国につき3回まで表示されます。それでは、頑張って下さい。")</li>
+            <li style="background-color:#EEF;">print("難易度を選択してください: ")</li>
+            <li style="background-color:#EFF;">print("1. 簡単")</li>
+            <li style="background-color:#EEF;">print("2. 普通")</li>
+            <li style="background-color:#EFF;">print("3. 難しい")</li>
+            <li style="background-color:#EEF;"></li>
+            <li style="background-color:#EFF;">#難易度選択</li>
+            <li style="background-color:#EEF;">difficulty = input("難易度を半角で入力して下さい (1,2,or 3):")</li>
+            <li style="background-color:#EFF;"></li>
+            <li style="background-color:#EEF;">if difficulty not in ["1", "2", "3"]:</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;print("エラー: 無効な難易度が選択されました。1, 2, 3のいずれかを選択してください。")</li>
+            <li style="background-color:#EEF;"></li>
+            <li style="background-color:#EFF;">#ヒントリスト</li>
+            <li style="background-color:#EEF;">countries = [</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"カナダ",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["北米の国","国旗にカエデの葉がある","ナイアガラの滝が有名"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["イギリスの植民地だった","最大都市はトロント","ロッキー山脈がまたがっている"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["速度制限の表記はMAXIMUM","公用語が２つある","オバマ元米国大統領が使っていたスマホ、ブラックベリーの本部がある"]</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"アメリカ",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["最大都市はニューヨーク","名門ハーバード大学がある","2021年に就任した大統領はバイデン"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["南北戦争が勃発","世界一の軍事力を誇る","大統領専用車の名前はビースト"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["鼻をすするのはマナー違反とされる","独立記念日は７月４日","農地の割合は約40%"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"トルコ",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["首都はアンカラ","ヨーロッパとアジアをまたがっている","国旗に三日月と星がある"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["アヤソフィアなど、世界遺産が多数","通貨はリラ","最大都市はイスタンブール"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["クルディスタンがまたがっている","紀元前１世紀、コンマゲネ王国が存在した","2024年現在の大統領はエルドアン"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"スウェーデン",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["北欧の国","首都はストックホルム","国旗に青が使われている"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["通貨はクローナ","世界的な福祉国家","隣国はフィンランドとノルウェー"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["H&amp;M,Spotifyの本部がある","ノーベル賞の授与式が行われている","移民の受け入れが多い"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"中国",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["首都は北京","日本と地理的に近い","2024年の人口は約14億人"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["尖閣諸島問題がある","辛さが特徴の料理がある","少子化が進んでいる"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["伝統的な結婚式がある","1911年、革命が起こった","ポタラ宮など観光名所が多数"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{   </li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"シンガポール",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["マーライオンが有名","東南アジアにある","国旗に赤が使われている"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["都市国家","マレーシアから独立","ガムを持ち込むと罰金になる"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["公用語は4つある","ラッフルズが上陸した","配車はGrab"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"イギリス",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["首都はロンドン","本初子午線が通る","料理がまずいと言われている"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["EUを離脱した","ハリーポッターのロケ地がある","略すとUK"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["蒸気機関車が発明された","EFTAを結成した","ノルマン人に侵攻された歴史がある"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"ドイツ",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["首都はベルリン","メルセデスベンツなど、世界的な自動車メーカーの本部がある","EUに加盟している"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["欧州中央銀行がある","シンデレラ城のモデルとなった城がある","2024年のGDPは世界3位"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["ハンザ同盟の盟主となった都市がある","「〇〇のヒロシマ」と呼ばれたドレスデンがある","ヘッセン州は経済の中心地"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"イタリア",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["首都はローマ","ヨーロッパにある国","パスタが美味しい"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["コロッセウムが有名","国土の中に独立国がある","フランスと国境を接している"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["オーバーツーリズムで入場料がかかるようになった都市がある","政府間機関ICCROMの本部がある","人口は約6000万人"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;},</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":"エジプト",</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"hints":{</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1":["首都はカイロ","アフリカの国","ピラミッドが有名"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"2":["公用語はアラビア語","ナイル川が流れている","太陽暦の起源"],</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"3":["カタールと断交したことがある","運河の通行料が収入源の一つ","ユネスコから遺跡救済キャンペーンを受けたことがある"],</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li style="background-color:#EFF;">]</li>
+            <li style="background-color:#EEF;"></li>
+            <li style="background-color:#EFF;">#カウント</li>
+            <li style="background-color:#EEF;">correct_answers = 0</li>
+            <li style="background-color:#EFF;"></li>
+            <li style="background-color:#EEF;">#問題</li>
+            <li style="background-color:#EFF;">for item in countries:</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;print("\n出題国はこちら！")</li>
+            <li style="background-color:#EFF;"></li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;hints = item["hints"][difficulty]</li>
+            <li style="background-color:#EFF;"></li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;#ヒント</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;for hint in hints:</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("ヒント:", hint)</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = input("国名を入力してください: ")</li>
+            <li style="background-color:#EEF;"></li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#判定</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if answer == item["country"]:</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("すごい！正解です！")</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;correct_answers += 1</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break  #次の国へ</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:</li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("違います！")</li>
+            <li style="background-color:#EEF;"></li>
+            <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;else:</li>
+            <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"残念！正解は「{item['country']}」でした。")</li>
+            <li style="background-color:#EFF;"></li>
+            <li style="background-color:#EEF;">print(f"\nゲーム終了！正解数は {correct_answers} / {len(countries)} でした。お疲れ様でしたー！")</li>
+            <li style="background-color:#EFF;"></li>
+            </ol></code>
+    </code></pre>
+
+    <h2>~感想~</h2><br>
+    ゲームの難易度を設定する方法などをインターネット等で調べて書いた。<br>
+    今のままだと上から順に出題される仕組みなので、今後は時間があったらランダムに問題が出てくる方法を調べて実行したいと思った。<br>
+    </div>
+</body>
+</html>
