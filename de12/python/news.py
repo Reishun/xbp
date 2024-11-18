@@ -11,7 +11,7 @@ def get_historical_date():
 
 def get_historical_event():
     # NewsAPIを使用して10年前のニュースを取得
-    api_key = "9b45ee79d1994d968c817617e9869bc2"  # 取得したAPIキーを入力
+    api_key = "9b45ee79d1994d968c817617e9869bc2" 
     date = get_historical_date()
     url = f"https://newsapi.org/v2/everything?q=history&from={date}&to={date}&sortBy=popularity&apiKey={api_key}"
 
@@ -20,7 +20,7 @@ def get_historical_event():
         response.raise_for_status() 
         data = response.json()
 
-        # ニュースデータが存在する場合、最初の記事を返す
+        # ニュースがある場合、最初の記事を出す
         if data["articles"]:
             article = data["articles"][0]
             title = article["title"]
@@ -36,7 +36,7 @@ def send_email(event):
     # メール情報を設定
     sender_email = "r202402050fm@jindai.jp"
     receiver_email = "r202402050fm@jindai.jp"
-    password = "b5p5u5GcuT"
+    password = "----------"
     
     # メールの内容を作成
     subject = f"10年前の今日: {get_historical_date()}"
