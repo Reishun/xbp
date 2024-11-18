@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <title>pythonゲーム作成</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1>10年前のニュースを送ろう</h1>
+
+    <div>
+    NewsAPIを通して、Outlookに10年前の今日起こった出来事を通知してくれるプログラムをつくった。<br>
+    参考資料→インターネットサイト、ChatGPT、ふりがなプログラミングpython（インプレス）
+
+    <h2>ソースコード</h2><br>
+
+    <code>
+        <ol style="list-style:decimal-leading-zero outside;in-left:0;padding-left:36px;margin:0;background-color:#EEF;color:#000;">
+        <li style="background-color:#EFF;">import smtplib</li>
+        <li style="background-color:#EEF;">from email.mime.text import MIMEText</li>
+        <li style="background-color:#EFF;">from email.mime.multipart import MIMEMultipart</li>
+        <li style="background-color:#EEF;">from datetime import datetime, timedelta</li>
+        <li style="background-color:#EFF;">import requests</li>
+        <li style="background-color:#EEF;"></li>
+        <li style="background-color:#EFF;">def get_historical_date():</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;# 今日から10年前の日付を取得</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;ten_years_ago = datetime.now() - timedelta(days=365*10)</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;return ten_years_ago.strftime('%Y-%m-%d')</li>
+        <li style="background-color:#EFF;"></li>
+        <li style="background-color:#EEF;">def get_historical_event():</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;# NewsAPIを使用して10年前のニュースを取得</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;api_key = "9b45ee79d1994d968c817617e9869bc2" </li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;date = get_historical_date()</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;url = f"https://newsapi.org/v2/everything?q=history&amp;from={date}&amp;to={date}&amp;sortBy=popularity&amp;apiKey={api_key}"</li>
+        <li style="background-color:#EFF;"></li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;try:</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response = requests.get(url)</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response.raise_for_status() </li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data = response.json()</li>
+        <li style="background-color:#EEF;"></li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ニュースがある場合、最初の記事を出す</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if data["articles"]:</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;article = data["articles"][0]</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title = article["title"]</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description = article["description"] or "No description available."</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url = article["url"]</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"Title: {title}\nDescription: {description}\nURL: {url}"</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "No news found for this date."</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;except Exception as e:</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"Error fetching news: {e}"</li>
+        <li style="background-color:#EEF;"></li>
+        <li style="background-color:#EFF;">def send_email(event):</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;# メール情報を設定</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;sender_email = "r202402050fm@jindai.jp"</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;receiver_email = "r202402050fm@jindai.jp"</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;password = "----------"</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;# メールの内容を作成</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;subject = f"10年前の今日: {get_historical_date()}"</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;body = f"こんにちは！\n\n10年前の今日({get_historical_date()})に起こった出来事:\n\n{event}"</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;message = MIMEMultipart()</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;message["From"] = sender_email</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;message["To"] = receiver_email</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;message["Subject"] = subject</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;message.attach(MIMEText(body, "plain"))</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;try:</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with smtplib.SMTP("smtp-mail.outlook.com", 587) as server:</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.starttls()  # 暗号化</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.login(sender_email, password)</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.sendmail(sender_email, receiver_email, message.as_string())</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("メール送信完了!")</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;except Exception as e:</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"メール送信に失敗しました: {e}")</li>
+        <li style="background-color:#EEF;"></li>
+        <li style="background-color:#EFF;">if __name__ == "__main__":</li>
+        <li style="background-color:#EEF;">&nbsp;&nbsp;&nbsp;&nbsp;event = get_historical_event()  # ニュース取得</li>
+        <li style="background-color:#EFF;">&nbsp;&nbsp;&nbsp;&nbsp;send_email(event)</li>
+        <li style="background-color:#EEF;"></li>
+        </ol></code>
+    </div>
+</body>
+</html>
+
