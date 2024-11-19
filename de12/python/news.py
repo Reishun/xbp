@@ -11,7 +11,7 @@ def get_historical_date():
 
 def get_historical_event():
     # NewsAPIを使用して10年前のニュースを取得
-    api_key = "9b45ee79d1994d968c817617e9869bc2" 
+    api_key = "-------------" 
     date = get_historical_date()
     url = f"https://newsapi.org/v2/everything?q=history&from={date}&to={date}&sortBy=popularity&apiKey={api_key}"
 
